@@ -14,9 +14,6 @@ from .submodules.carla_data_provider import *
 
 
 class CarlaVehicleInterface(Node):
-    # steering_factor = 0.4
-    # max_steer_angle = 0.75
-    
     def __init__(self):
         rclpy.init(args=None)
 
@@ -80,7 +77,7 @@ class CarlaVehicleInterface(Node):
 
 
         out_steering_state.stamp = in_status.header.stamp
-        out_steering_state.steering_tire_angle = -in_status.control.steer
+        out_steering_state.steering_tire_angle = (-in_status.control.steer * self.max_steer_angle) / self.steering_factor
 
         out_gear_state.stamp = in_status.header.stamp
         out_gear_state.report = GearReport.DRIVE  
