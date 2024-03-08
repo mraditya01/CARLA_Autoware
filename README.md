@@ -23,7 +23,8 @@
 * Clone this repositories and ROSBridge
   ```
   git clone https://github.com/mraditya01/CARLA_Autoware.git
-  git clone --recurse-submodules https://github.com/gezp/carla_ros.git -b humble-carla-0.9.14 
+  git clone --recurse-submodules https://github.com/gezp/carla_ros.git -b humble-carla-0.9.14
+  git clone https://github.com/astuff/astuff_sensor_msgs.git
   ```
 
 ## build
