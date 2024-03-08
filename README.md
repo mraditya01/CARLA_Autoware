@@ -16,7 +16,6 @@
 ## install
 * [Autoware.Universe](https://autowarefoundation.github.io/autoware-documentation/galactic/installation/autoware/source-installation/) 
 * [CARLA Installation](https://carla.readthedocs.io/en/latest/start_quickstart/) 
-* carla-ros-bridge (git clone --recurse-submodules https://github.com/gezp/carla_ros.git -b humble-carla-0.9.14)
 * [autoware containts](https://bitbucket.org/carla-simulator/autoware-contents/src/master/maps/)  
   1. Download maps (y-axis inverted version) to arbitaly location
   2. Change names. (point_cloud/Town01.pcd -> Town01/pointcloud_map.pcd, vector_maps/lanelet2/Town01.osm -> Town01/lanelet2_map.osm)
