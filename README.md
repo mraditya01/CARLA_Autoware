@@ -6,6 +6,7 @@
  This ros package enables autonomous driving using Autoware in addition to the basic function of the official [ros-bridge](https://github.com/carla-simulator/ros-bridge) package (communication between ros and carla). (https://github.com/gezp for ROS2 Humble)
 - Make sure to Download the Python egg for 3.10 from [here](https://github.com/gezp/carla_ros/releases/tag/carla-0.9.14-ubuntu-22.04). 
 - Add the egg file to the folder: ../CARLA_0.9.14/PythonAPI/carla/dist
+- And install the wheel using pip.
 
 # Environment 
 |ubuntu|ros|carla|autoware|
@@ -19,6 +20,7 @@
 * [autoware containts](https://bitbucket.org/carla-simulator/autoware-contents/src/master/maps/)  
   1. Download maps (y-axis inverted version) to arbitaly location
   2. Change names. (point_cloud/Town01.pcd -> Town01/pointcloud_map.pcd, vector_maps/lanelet2/Town01.osm -> Town01/lanelet2_map.osm)
+  3. Create ``map_projector_info.yaml`` and add ``modified projector_type: local``.
 * Clone this repositories and ROSBridge
   ```
   git clone https://github.com/mraditya01/CARLA_Autoware.git
