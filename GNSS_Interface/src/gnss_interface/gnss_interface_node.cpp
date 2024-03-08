@@ -1,5 +1,4 @@
 #include "gnss_interface/gnss_interface_node.hpp"
-#include <yaml-cpp/yaml.h>
 #include <proj.h>
 
 
