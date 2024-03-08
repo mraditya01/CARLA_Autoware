@@ -2,7 +2,7 @@
 # ROS2/Autoware.universe bridge for CARLA simulator
 
 
-# Working on Ubuntu 22.04 and ROS2 humble. Thanks to https://github.com/gezp this is possible. 
+### Thanks to https://github.com/gezp for ROS2 Humble support for CARLA ROS bridge. 
  This ros package enables autonomous driving using Autoware in addition to the basic function of the official [ros-bridge](https://github.com/carla-simulator/ros-bridge) package (communication between ros and carla). (https://github.com/gezp for ROS2 Humble)
 - Make sure to Download the Python egg for 3.10 from [here](https://github.com/gezp/carla_ros/releases/tag/carla-0.9.14-ubuntu-22.04). 
 - Add the egg file to the folder: ../CARLA_0.9.14/PythonAPI/carla/dist
