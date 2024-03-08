@@ -43,7 +43,7 @@ cd CARLA
 ```bash
 ros2 launch carla_ros_bridge carla_ros_bridge_with_example_ego_vehicle.launch.py role_name:='ego_vehicle'
 ros2 launch carla_autoware carla_autoware.launch.py
-ros2 launch autoware_launch e2e_simulator.launch.xml map_path:=$HOME/autoware_map/carla_town_01 vehicle_model:=sample_vehicle sensor_model:=carla_sensor_kit
+ros2 launch autoware_launch e2e_simulator.launch.xml map_path:=$HOME/autoware_map/Town01 vehicle_model:=sample_vehicle sensor_model:=carla_sensor_kit
 ```
 
 3. Set initial pose (Init by GNSS)
