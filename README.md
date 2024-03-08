@@ -20,7 +20,7 @@
 * [autoware containts](https://bitbucket.org/carla-simulator/autoware-contents/src/master/maps/)  
   1. Download maps (y-axis inverted version) to arbitaly location
   2. Change names. (point_cloud/Town01.pcd -> Town01/pointcloud_map.pcd, vector_maps/lanelet2/Town01.osm -> Town01/lanelet2_map.osm)
-
+* Copy the files (sensor_kit_calibration.yaml, sensors.calibration.yaml) from folder "GNSS_interface/src/carla_sensor_kit_launch/carla_sensor_kit_description/config" to "src/param/autoware_individual_params/carla_sensor_kit".
 ## build
 ```bash
 cd colcon_ws
