@@ -25,7 +25,6 @@
   ```
   git clone https://github.com/mraditya01/CARLA_Autoware.git
   git clone --recurse-submodules https://github.com/gezp/carla_ros.git -b humble-carla-0.9.14
-  git clone https://github.com/astuff/astuff_sensor_msgs.git
   ```
  * Copy the files (sensor_kit_calibration.yaml, sensors.calibration.yaml) from folder "GNSS_interface/src/carla_sensor_kit_launch/carla_sensor_kit_description/config" to "src/param/autoware_individual_params/carla_sensor_kit".
 
@@ -45,9 +44,7 @@ cd CARLA
 
 2. Run ros nodes
 ```bash
-ros2 launch carla_ros_bridge carla_ros_bridge_with_example_ego_vehicle.launch.py role_name:='ego_vehicle'
-ros2 launch carla_autoware carla_autoware.launch.py
-ros2 launch autoware_launch e2e_simulator.launch.xml map_path:=$HOME/autoware_map/Town01 vehicle_model:=sample_vehicle sensor_model:=carla_sensor_kit
+ros2 launch carla_autoware e2e_simulator.launch.xml map_path:=$HOME/autoware_map/carla_town_01 vehicle_model:=sample_vehicle sensor_model:=carla_sensor_kitros2 launch carla_autoware carla_autoware.launch.py
 ```
 
 3. Set initial pose (Init by GNSS)
