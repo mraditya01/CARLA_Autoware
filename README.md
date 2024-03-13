@@ -20,7 +20,7 @@
 * [autoware containts](https://bitbucket.org/carla-simulator/autoware-contents/src/master/maps/)  
   1. Download maps (y-axis inverted version) to arbitaly location
   2. Change names. (point_cloud/Town01.pcd -> Town01/pointcloud_map.pcd, vector_maps/lanelet2/Town01.osm -> Town01/lanelet2_map.osm)
-  3. Create ``map_projector_info.yaml`` and add ``projector_type: local`` on the first line.
+  3. Create ``map_projector_info.yaml`` inside the same folder as the pcd and osm, then add ``projector_type: local`` on the first line.
 * Clone this repositories and ROSBridge
   ```
   git clone https://github.com/mraditya01/CARLA_Autoware.git
