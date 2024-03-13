@@ -28,13 +28,13 @@ elif ROS_VERSION == 2:
         data_files=[
             ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
             ('share/' + package_name, ['package.xml']),
-            (os.path.join('share', package_name), glob('launch/*.launch.py'))
+            (os.path.join('share', package_name), glob('launch/*.launch.xml'))
         ],
         install_requires=['setuptools'],
         zip_safe=True,
-        maintainer='CARLA Simulator Team',
-        maintainer_email='carla.simulator@gmail.com',
-        description='CARLA manual control for ROS2 bridge',
+        maintainer='nradityagio',
+        maintainer_email='mradityagio@gmail.com',
+        description='CARLA ROS2 bridge for AUTOWARE',
         license='MIT',
         tests_require=['pytest'],
         entry_points={

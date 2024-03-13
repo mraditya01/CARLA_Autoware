@@ -43,4 +43,10 @@ ament_export_dependencies(rclpy)
 # Install launch files.
 install(DIRECTORY launch DESTINATION share/${PROJECT_NAME}/)
 
+
+ament_auto_package(
+  launch
+  resource
+  src
+)
 ament_package()
