@@ -44,7 +44,7 @@ cd CARLA
 
 2. Run ros nodes
 ```bash
-ros2 launch carla_autoware e2e_simulator.launch.xml map_path:=$HOME/autoware_map/carla_town_01 vehicle_model:=sample_vehicle sensor_model:=carla_sensor_kitros2 launch carla_autoware carla_autoware.launch.py
+ros2 launch carla_autoware e2e_simulator.launch.xml map_path:=$HOME/autoware_map/carla_town_01 vehicle_model:=sample_vehicle sensor_model:=carla_sensor_kit carla:=true
 ```
 
 3. Set initial pose (Init by GNSS)
