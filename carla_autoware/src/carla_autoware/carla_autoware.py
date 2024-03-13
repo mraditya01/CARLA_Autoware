@@ -10,7 +10,6 @@ import math
 from transforms3d.euler import quat2euler
 from sensor_msgs_py.point_cloud2 import create_cloud
 import threading
-from .submodules.carla_data_provider import *
 
 
 class CarlaVehicleInterface(Node):
@@ -22,14 +21,7 @@ class CarlaVehicleInterface(Node):
         client = carla.Client("localhost", 2000)
         client.set_timeout(20)    
         
-        self._world = client.get_world()
-        if self._world is not None:
-            settings = self._world.get_settings()
-            settings.synchronous_mode = True
-            self._world.apply_settings(settings)
-            CarlaDataProvider.set_world(self._world)
-            CarlaDataProvider.set_client(client)            
-        
+        self._world = client.get_world()        
         self.steering_factor = 0.45
         self.max_steer_angle = 0.7
         self.m_current_vel = 0.0
