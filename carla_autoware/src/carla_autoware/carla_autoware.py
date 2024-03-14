@@ -69,7 +69,7 @@ class CarlaVehicleInterface(Node):
 
 
         out_steering_state.stamp = in_status.header.stamp
-        out_steering_state.steering_tire_angle = (-in_status.control.steer * self.max_steer_angle) / self.steering_factor
+        out_steering_state.steering_tire_angle = (-in_status.control.steer)
 
         out_gear_state.stamp = in_status.header.stamp
         out_gear_state.report = GearReport.DRIVE  
@@ -82,10 +82,6 @@ class CarlaVehicleInterface(Node):
         self.pub_ctrl_mode.publish(out_ctrl_mode)
         self.pub_gear_state.publish(out_gear_state)
         
-
-
-
-
     def control_callback(self, in_cmd):
         """
         Callback function for CARLA Control
@@ -106,16 +102,15 @@ class CarlaVehicleInterface(Node):
             else:
                 out_cmd.brake = 0.01
 
-        out_cmd.steer = (-in_cmd.lateral.steering_tire_angle * self.max_steer_angle) / self.steering_factor
+        out_cmd.steer = (-in_cmd.lateral.steering_tire_angle)
         self.pub_control.publish(out_cmd)
 
-
-    def publish_lidar(self, data):
+    def publish_lidar(self, lidar_msg):
         """
         Publish LIDAR to Interface
         """
-        data.header.frame_id = "velodyne_top"
-        self.sensing_cloud_publisher.publish(data)   
+        lidar_msg.header.frame_id = "velodyne_top"
+        self.sensing_cloud_publisher.publish(lidar_msg)   
             
     def publish_imu(self, imu_msg):
         """
