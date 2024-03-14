@@ -114,6 +114,7 @@ class CarlaVehicleInterface(Node):
         """
         Publish LIDAR to Interface
         """
+        data.header.frame_id = "velodyne_top"
         self.sensing_cloud_publisher.publish(data)   
             
     def publish_imu(self, imu_msg):
