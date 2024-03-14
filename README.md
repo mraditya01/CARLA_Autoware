@@ -52,6 +52,7 @@ ros2 launch carla_autoware e2e_simulator.launch.xml map_path:=$HOME/autoware_map
 5. Wait for planning
 6. Engage
 
-# Environment 
+# Tips
 * If you want to edit the sensors configuration used in CARLA, edit ``objects.json`` located in ``carla_autoware/config``.
 * You will also need to edit the ``carla_sensor_kit_description`` if you change the sensor configuration.
+* Misalignment might occurs during initialization, pressing ``init by gnss`` button should fix it.

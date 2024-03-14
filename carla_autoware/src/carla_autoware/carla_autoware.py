@@ -22,11 +22,9 @@ class CarlaVehicleInterface(Node):
         client.set_timeout(20)    
         
         self._world = client.get_world()        
-        self.steering_factor = 0.45
-        self.max_steer_angle = 0.7
-        self.m_current_vel = 0.0
-        self.target_speed = 0.0
-        self.speed_diff = 0.0
+        self.current_vel = 0.0
+        self.target_vel = 0.0
+        self.vel_diff = 0.0
         self.current_control = carla.VehicleControl()
         self.ros2_node = rclpy.create_node("carla_autoware")
         
@@ -65,7 +63,7 @@ class CarlaVehicleInterface(Node):
         out_vel_state.longitudinal_velocity = in_status.velocity
         out_vel_state.lateral_velocity = 0.0
         out_vel_state.heading_rate = 0.0
-        self.m_current_vel = in_status.velocity
+        self.current_vel = in_status.velocity
 
 
         out_steering_state.stamp = in_status.header.stamp
@@ -87,17 +85,17 @@ class CarlaVehicleInterface(Node):
         Callback function for CARLA Control
         """
         out_cmd = CarlaEgoVehicleControl()
-        self.target_speed = abs(in_cmd.longitudinal.speed)
-        self.speed_diff = self.target_speed - self.m_current_vel
+        self.target_vel = abs(in_cmd.longitudinal.speed)
+        self.vel_diff = self.target_vel - self.current_vel
 
-        if self.speed_diff > 0:
+        if self.vel_diff > 0:
             out_cmd.throttle = 0.75
             out_cmd.brake = 0.0
-        elif self.speed_diff <= 0.0:
+        elif self.vel_diff <= 0.0:
             out_cmd.throttle = 0.0
-            if self.target_speed <= 0.0:
+            if self.target_vel <= 0.0:
                 out_cmd.brake = 0.75
-            elif self.speed_diff > -1:
+            elif self.vel_diff > -1:
                 out_cmd.brake = 0.0
             else:
                 out_cmd.brake = 0.01
