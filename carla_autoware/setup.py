@@ -19,12 +19,11 @@ elif ROS_VERSION == 2:
     from setuptools import setup
 
     package_name = 'carla_autoware'
-    submodules = "carla_autoware/submodules"
 
     setup(
         name=package_name,
         version='0.0.0',
-        packages=[package_name, submodules],
+        packages=[package_name],
         data_files=[
             ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
             ('share/' + package_name, glob('config/*.json')),
@@ -33,7 +32,7 @@ elif ROS_VERSION == 2:
         ],
         install_requires=['setuptools'],
         zip_safe=True,
-        maintainer='nradityagio',
+        maintainer='mradityagio',
         maintainer_email='mradityagio@gmail.com',
         description='CARLA ROS2 bridge for AUTOWARE',
         license='MIT',

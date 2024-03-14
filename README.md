@@ -20,7 +20,7 @@
 * [autoware containts](https://bitbucket.org/carla-simulator/autoware-contents/src/master/maps/)  
   1. Download maps (y-axis inverted version) to arbitaly location
   2. Change names. (point_cloud/Town01.pcd -> Town01/pointcloud_map.pcd, vector_maps/lanelet2/Town01.osm -> Town01/lanelet2_map.osm)
-  3. Create ``map_projector_info.yaml`` inside the same folder as the pcd and osm, then add ``projector_type: local`` on the first line.
+  3. Create ``map_projector_info.yaml`` and add ``projector_type: local`` on the first line.
 * Clone this repositories and ROSBridge
   ```
   git clone https://github.com/mraditya01/CARLA_Autoware.git
@@ -44,10 +44,14 @@ cd CARLA
 
 2. Run ros nodes
 ```bash
-ros2 launch carla_autoware e2e_simulator.launch.xml map_path:=$HOME/autoware_map/carla_town_01 vehicle_model:=sample_vehicle sensor_model:=carla_sensor_kit carla:=true
+ros2 launch carla_autoware e2e_simulator.launch.xml map_path:=$HOME/autoware_map/carla_town_01 vehicle_model:=sample_vehicle sensor_model:=carla_sensor_kit
 ```
 
 3. Set initial pose (Init by GNSS)
 4. Set goal position
 5. Wait for planning
 6. Engage
+
+# Environment 
+* If you want to edit the sensors configuration used in CARLA, edit ``objects.json`` located in ``carla_autoware/config``.
+* You will also need to edit the ``carla_sensor_kit_description`` if you change the sensor configuration.
