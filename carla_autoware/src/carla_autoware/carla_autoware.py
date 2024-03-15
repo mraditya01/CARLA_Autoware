@@ -3,7 +3,7 @@ from rclpy.node import Node
 from autoware_auto_vehicle_msgs.msg import VelocityReport, SteeringReport, ControlModeReport, GearReport
 from carla_msgs.msg import CarlaEgoVehicleStatus, CarlaEgoVehicleControl
 from autoware_auto_control_msgs.msg import AckermannControlCommand
-from sensor_msgs.msg import Imu
+from sensor_msgs.msg import Imu, PointCloud2
 import carla
 from rclpy.qos import QoSProfile
 import math
@@ -38,11 +38,14 @@ class CarlaVehicleInterface(Node):
         self.pub_gear_state = self.ros2_node.create_publisher(GearReport, '/vehicle/status/gear_status', 1)
         self.pub_control = self.ros2_node.create_publisher(CarlaEgoVehicleControl, '/carla/ego_vehicle/vehicle_control_cmd', 1)
         self.vehicle_imu_publisher = self.ros2_node.create_publisher(Imu, '/sensing/imu/tamagawa/imu_raw', 1)
+        self.sensing_cloud_publisher = self.ros2_node.create_publisher(PointCloud2, '/carla_pointcloud', 1)
 
         # Subscribe Topics used in Control
         self.sub_status = self.ros2_node.create_subscription(CarlaEgoVehicleStatus, '/carla/ego_vehicle/vehicle_status', self.ego_status_callback, 1)
         self.sub_control = self.ros2_node.create_subscription(AckermannControlCommand, '/control/command/control_cmd', self.control_callback, qos_profile=QoSProfile(depth=1))
         self.sub_imu = self.ros2_node.create_subscription(Imu, '/carla/ego_vehicle/imu', self.publish_imu, 1)
+        self.sub_lidar = self.ros2_node.create_subscription(PointCloud2, '/carla/ego_vehicle/lidar', self.publish_lidar, qos_profile=QoSProfile(depth=1))
+
 
 
         

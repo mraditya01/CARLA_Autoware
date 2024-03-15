@@ -13,7 +13,6 @@ void PointCloudInterface::processScan(const sensor_msgs::msg::PointCloud2::Share
 		{
 			
 			transformed_cloud.header.stamp = scanMsg->header.stamp;
-			transformed_cloud.header.frame_id = "velodyne_top";
 			velodyne_points_top->publish(transformed_cloud);
 			velodyne_points_con->publish(transformed_cloud);
 			velodyne_points_raw->publish(transformed_cloud);
