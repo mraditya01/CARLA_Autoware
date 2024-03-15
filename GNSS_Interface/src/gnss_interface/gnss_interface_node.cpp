@@ -47,8 +47,8 @@ void GnssInterface::GnssCallBack(const sensor_msgs::msg::NavSatFix::SharedPtr ms
 		"+proj=tmerc +lat_0=0 +lon_0=0 +k=0.9999 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs",
 		origin, msg->latitude, msg->longitude, msg->altitude,
 		p.pos.x, p.pos.y, p.pos.z);
-
 	pose_.header = msg->header;
+	pose_.header.frame_id = "map";
 	pose_.pose.position.x = p.pos.x;
 	pose_.pose.position.y = p.pos.y;
 	pose_.pose.position.z = p.pos.z;
