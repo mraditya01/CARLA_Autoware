@@ -11,7 +11,24 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 #include <math.h>
-#include <tinyxml.h>
+
+class GnssInterface : public rclcpp::Node
+{
+public:
+   explicit GnssInterface(const rclcpp::NodeOptions & node_options);
+   virtual ~GnssInterface();
+   std::string tf_output_frame_;
+  
+private:
+
+  rclcpp::Subscription<sensor_msgs::msg::NavSatFix>::SharedPtr sub_gnss_fix;
+  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pup_pose;
+  rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr pup_pose_with_cov;
+
+
+  void GnssCallBack(const sensor_msgs::msg::NavSatFix::SharedPtr msg);
+
+};
 
 namespace interface {
 	namespace gnss {
@@ -20,13 +37,13 @@ class GPSPoint
 {
 public:
 	double x, y, z;
-	double alt, lat, lon;
+	double lat, lon, alt;
 	double dir, a;
 
 	GPSPoint()
 	{
 		x = y = z = 0;
-		alt = lat = lon = 0;
+		lat = lon = alt = 0;
 		dir = a = 0;
 	}
 
@@ -71,36 +88,17 @@ public:
 	}
 };
 
-class utils {
+class MappingUtils {
 public:
-	utils();
-	virtual ~utils();
-	static void convertLLAToXYZ(const std::string& proj_str, const WayPoint& origin, const double& lat,
+	MappingUtils();
+	virtual ~MappingUtils();
+
+	static void llaToxyz(const std::string& proj_str, const WayPoint& origin, const double& lat,
 			const double& lon, const double& alt, double& x_out, double& y_out, double& z_out);
 };
 
 } 
 } 
-
-
-class GnssInterface : public rclcpp::Node
-{
-public:
-   explicit GnssInterface(const rclcpp::NodeOptions & node_options);
-   virtual ~GnssInterface();
-   std::string tf_output;
-  
-private:
-
-  rclcpp::Subscription<sensor_msgs::msg::NavSatFix>::SharedPtr sub_gnss_fix;
-  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pup_pose;
-  rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr pup_pose_cov;
-
-
-  void processGnssData(const sensor_msgs::msg::NavSatFix::SharedPtr msg);
-
-};
-
 
 #endif
 

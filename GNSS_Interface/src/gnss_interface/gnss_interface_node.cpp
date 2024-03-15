@@ -8,77 +8,74 @@ namespace interface {
 using namespace std;
 
 
-utils::utils() {
+MappingUtils::MappingUtils() {
 }
 
-utils::~utils() {
+MappingUtils::~MappingUtils() {
 }
 
 
-void utils::convertLLAToXYZ(const std::string& projectionString, const WayPoint& origin, 
-                            const double& latitude, const double& longitude, 
-                            const double& altitude, double& xOut, double& yOut, double& zOut)
-{
-    if (projectionString.size() < 8)
-        return;
+void MappingUtils::llaToxyz(const std::string& proj_str, const WayPoint& origin, 
+                            const double& lat, const double& lon, const double& alt, 
+                            double& x_out, double& y_out, double& z_out) {
+    if (proj_str.size() < 8) return;
 
-    PJ_CONTEXT *projContext = proj_context_create();
-    PJ *projection = proj_create_crs_to_crs(projContext, "EPSG:4326", projectionString.c_str(), NULL);
+    PJ_CONTEXT *C = proj_context_create();
+    PJ *P = proj_create_crs_to_crs(C, "EPSG:4326", proj_str.c_str(), NULL);
 
-    if (projection == nullptr)
-        return;
+    if (P == 0) return;
 
-    PJ_COORD gpsDegrees = proj_coord(latitude, longitude, altitude, 0);
-    PJ_COORD cartesianOut = proj_trans(projection, PJ_FWD, gpsDegrees);
-    
-    xOut = cartesianOut.enu.e + origin.pos.x;
-    yOut = cartesianOut.enu.n + origin.pos.y;
-    zOut = cartesianOut.enu.u + origin.pos.z;
+    PJ_COORD gps_degrees = proj_coord(lat, lon, alt, 0);
+    PJ_COORD xyz_out = proj_trans(P, PJ_FWD, gps_degrees);
+    x_out = xyz_out.enu.e + origin.pos.x;
+    y_out = xyz_out.enu.n + origin.pos.y;
+    z_out = xyz_out.enu.u + origin.pos.z;
 
-    proj_destroy(projection);
-    proj_context_destroy(projContext); 
+    proj_destroy(P);
+    proj_context_destroy(C);
 }
 } 
 } 
 
 
-void GnssInterface::processGnssData(const sensor_msgs::msg::NavSatFix::SharedPtr message)
+void GnssInterface::GnssCallBack(const sensor_msgs::msg::NavSatFix::SharedPtr msg)
 {
-    geometry_msgs::msg::PoseStamped pose_;
-    geometry_msgs::msg::PoseWithCovarianceStamped pose_cov;
-    interface::gnss::WayPoint originalPoint, tfPoint;
+	geometry_msgs::msg::PoseStamped pose_;
+	geometry_msgs::msg::PoseWithCovarianceStamped pose_cov_;
+	interface::gnss::WayPoint origin, p;
+	interface::gnss::MappingUtils::llaToxyz(
+		"+proj=tmerc +lat_0=0 +lon_0=0 +k=0.9999 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs",
+		origin, msg->latitude, msg->longitude, msg->altitude,
+		p.pos.x, p.pos.y, p.pos.z);
 
-    interface::gnss::utils::convertLLAToXYZ(
-        "+proj=tmerc +lat_0=0 +lon_0=0 +k=0.9999 +x_0=0 +y_0=0 +ellps=GRS80 +units=m +no_defs",
-        originalPoint, message->latitude, message->longitude, message->altitude, 
-        tfPoint.pos.x, tfPoint.pos.y, tfPoint.pos.z);
+	pose_.header = msg->header;
+	pose_.pose.position.x = p.pos.x;
+	pose_.pose.position.y = p.pos.y;
+	pose_.pose.position.z = p.pos.z;
 
-    pose_cov.header = pose_.header;
-    pose_cov.pose.pose = pose_.pose;
+	pose_cov_.header = pose_.header;
+	pose_cov_.pose.pose = pose_.pose;
 
-    pose_.header = message->header;
-    pose_.pose.position.x = tfPoint.pos.x;
-    pose_.pose.position.y = tfPoint.pos.y;
-    pose_.pose.position.z = tfPoint.pos.z;
+	pup_pose->publish(pose_);
+	pup_pose_with_cov->publish(pose_cov_);
 
-
-    pup_pose->publish(pose_);
-    pup_pose_cov->publish(pose_cov);
 }
 
-GnssInterface::~GnssInterface(){
+GnssInterface::~GnssInterface()
+{
+
 }
 
 GnssInterface::GnssInterface(const rclcpp::NodeOptions & node_options)
-: Node("gnss_interface_node", node_options), tf_output("base_link")
+: Node("gnss_interface_node", node_options), tf_output_frame_("base_link")
 {
 	sub_gnss_fix = this->create_subscription<sensor_msgs::msg::NavSatFix>(
-		    "carla_nav_sat_fix", 1,
-		    std::bind(&GnssInterface::processGnssData, this, std::placeholders::_1));
+		    "carla/ego_vehicle/gnss", 1,
+		    std::bind(&GnssInterface::GnssCallBack, this, std::placeholders::_1));
 
 	pup_pose = this->create_publisher<geometry_msgs::msg::PoseStamped>(
 		"/sensing/gnss/pose", 1);
-	pup_pose_cov = this->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
+	pup_pose_with_cov = this->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
 		"/sensing/gnss/pose_with_covariance", 1);	  
 }
 
